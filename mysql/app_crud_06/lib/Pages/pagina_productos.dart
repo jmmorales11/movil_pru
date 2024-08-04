@@ -15,11 +15,15 @@ class _PaginaProductosState extends State<PaginaProductos> {
   List _listaDatos = [];
   bool _cargando = true;
   String _mensajeError = '';
+  String baseUrlConnection = "http://localhost:8080/moviles/movil_pru/mysql/CRUD_06/conexion.php";
+  String baseUrlDelete = "http://localhost:8080/moviles/movil_pru/mysql/CRUD_06/eliminar.php";
+
+
+
 
   Future _obtenerDatos() async {
     try {
-      final respuesta = await http.get(Uri.parse(
-          "http://localhost/Moviles/repositorio/movil_pru/mysql/CRUD_06/conexion.php"));
+      final respuesta = await http.get(Uri.parse(baseUrlConnection));
       if (respuesta.statusCode == 200) {
         final datos = jsonDecode(respuesta.body);
 
@@ -54,8 +58,7 @@ class _PaginaProductosState extends State<PaginaProductos> {
   Future<void> _eliminarProducto(String id) async {
     try {
       final respuesta = await http.post(
-        Uri.parse(
-            "http://localhost/Moviles/repositorio/movil_pru/mysql/CRUD_06/eliminar.php"),
+        Uri.parse(baseUrlDelete),
         body: {'producto_id': id},
       );
       if (respuesta.statusCode == 200) {

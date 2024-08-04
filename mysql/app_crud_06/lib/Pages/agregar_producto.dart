@@ -1,6 +1,8 @@
+// agregar_producto.dart
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../validate.dart';
 
 class AgregarProducto extends StatefulWidget {
   const AgregarProducto({super.key});
@@ -13,16 +15,26 @@ class _AgregarProductoState extends State<AgregarProducto> {
   final formKey = GlobalKey<FormState>();
   TextEditingController nombreProducto = TextEditingController();
   TextEditingController precioProducto = TextEditingController();
+  String baseUrlCreate = "http://localhost:8080/moviles/movil_pru/mysql/CRUD_06/create.php";
 
   Future<bool> _guardar() async {
+    if (!validarNombreProducto(nombreProducto.text)) {
+      print("Nombre del producto no válido");
+      return false;
+    }
+    if (!validarPrecioProducto(precioProducto.text)) {
+      print("Precio del producto no válido");
+      return false;
+    }
     try {
       final respuesta = await http.post(
-          Uri.parse(
-              'http://localhost/Moviles/repositorio/movil_pru/mysql/CRUD_06/create.php'),
-          body: {
-            'nombre_productos': nombreProducto.text,
-            'precio_producto': precioProducto.text,
-          });
+        Uri.parse(baseUrlCreate),
+        body: {
+          'nombre_productos': nombreProducto.text,
+          'precio_producto': precioProducto.text,
+        },
+      );
+
       if (respuesta.statusCode == 200) {
         final body = jsonDecode(respuesta.body);
         if (body['mensaje'] == 'Éxito') {
@@ -63,20 +75,21 @@ class _AgregarProductoState extends State<AgregarProducto> {
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12.0),
                     borderSide: const BorderSide(
-                      color: Colors.lightBlue, // color del borde
+                      color: Colors.lightBlue,
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12.0),
                     borderSide: const BorderSide(
-                      color: Colors
-                          .lightBlue, // color del borde cuando está enfocado
+                      color: Colors.lightBlue,
                     ),
                   ),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Vacio";
+                  } else if (!validarNombreProducto(value)) {
+                    return "Nombre del producto no válido";
                   }
                   return null;
                 },
@@ -89,20 +102,21 @@ class _AgregarProductoState extends State<AgregarProducto> {
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12.0),
                     borderSide: const BorderSide(
-                      color: Colors.lightBlue, // color del borde
+                      color: Colors.lightBlue,
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12.0),
                     borderSide: const BorderSide(
-                      color: Colors
-                          .lightBlue, // color del borde cuando está enfocado
+                      color: Colors.lightBlue,
                     ),
                   ),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "vacio";
+                    return "Vacio";
+                  } else if (!validarPrecioProducto(value)) {
+                    return "Precio del producto no válido";
                   }
                   return null;
                 },

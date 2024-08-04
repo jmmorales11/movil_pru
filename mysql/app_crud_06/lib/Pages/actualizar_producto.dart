@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../validate.dart';
 
 class ActualizarProducto extends StatefulWidget {
   final String id;
@@ -22,6 +23,7 @@ class _ActualizarProductoState extends State<ActualizarProducto> {
   final formKey = GlobalKey<FormState>();
   late TextEditingController nombreProducto;
   late TextEditingController precioProducto;
+  String baseUrlEdit = "http://localhost:8080/moviles/movil_pru/mysql/CRUD_06/actualizar.php";
 
   @override
   void initState() {
@@ -31,10 +33,17 @@ class _ActualizarProductoState extends State<ActualizarProducto> {
   }
 
   Future<bool> _actualizar() async {
+    if (!validarNombreProducto(nombreProducto.text)) {
+      print("Nombre del producto no válido");
+      return false;
+    }
+    if (!validarPrecioProducto(precioProducto.text)) {
+      print("Precio del producto no válido");
+      return false;
+    }
     try {
       final respuesta = await http.post(
-        Uri.parse(
-            'http://localhost/Moviles/repositorio/movil_pru/mysql/CRUD_06/actualizar.php'),
+        Uri.parse(baseUrlEdit),
         body: {
           'producto_id': widget.id,
           'nombre_productos': nombreProducto.text,
@@ -91,7 +100,9 @@ class _ActualizarProductoState extends State<ActualizarProducto> {
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Vacio";
+                    return "Nombre del producto es requerido";
+                  } else if (!validarNombreProducto(value)) {
+                    return "Nombre del producto no válido";
                   }
                   return null;
                 },
@@ -116,7 +127,9 @@ class _ActualizarProductoState extends State<ActualizarProducto> {
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "vacio";
+                    return "Precio del producto es requerido";
+                  } else if (!validarPrecioProducto(value)) {
+                    return "Precio del producto no válido";
                   }
                   return null;
                 },
