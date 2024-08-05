@@ -23,7 +23,7 @@ class _ActualizarProductoState extends State<ActualizarProducto> {
   final formKey = GlobalKey<FormState>();
   late TextEditingController nombreProducto;
   late TextEditingController precioProducto;
-  String baseUrlEdit = "http://localhost:8080/moviles/movil_pru/mysql/CRUD_06/actualizar.php";
+  String baseUrlEdit = "http://localhost/CRUD_06/actualizar.php";
 
   @override
   void initState() {
@@ -72,7 +72,8 @@ class _ActualizarProductoState extends State<ActualizarProducto> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Actualizar producto"),
+        title: const Text("Actualizar producto", style: TextStyle(color: Colors.white),),
+        centerTitle: true,
         backgroundColor: Colors.deepPurple,
       ),
       body: Padding(

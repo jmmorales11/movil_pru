@@ -15,8 +15,8 @@ class _PaginaProductosState extends State<PaginaProductos> {
   List _listaDatos = [];
   bool _cargando = true;
   String _mensajeError = '';
-  String baseUrlConnection = "http://localhost:8080/moviles/movil_pru/mysql/CRUD_06/conexion.php";
-  String baseUrlDelete = "http://localhost:8080/moviles/movil_pru/mysql/CRUD_06/eliminar.php";
+  String baseUrlConnection = "http://localhost/CRUD_06/conexion.php";
+  String baseUrlDelete = "http://localhost/CRUD_06/eliminar.php";
 
 
 
@@ -92,7 +92,8 @@ class _PaginaProductosState extends State<PaginaProductos> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Productos"),
+        title: const Text("Productos", style: TextStyle(color: Colors.white),),
+        centerTitle: true,
         backgroundColor: Colors.deepPurple,
       ),
       body: _cargando
@@ -112,7 +113,7 @@ class _PaginaProductosState extends State<PaginaProductos> {
                               'Nombre no disponible',
                         ),
                         subtitle: Text(
-                          producto["precio_producto"] ?? 'Precio no disponible',
+                          "\$ ${producto["precio_productos"]}",
                         ),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -134,11 +135,13 @@ class _PaginaProductosState extends State<PaginaProductos> {
                                   _obtenerDatos();
                                 }
                               },
+                              tooltip: "Editar Producto",
                             ),
                             IconButton(
                               icon: Icon(Icons.delete),
                               onPressed: () =>
                                   _eliminarProducto(producto["id_productos"]),
+                              tooltip: "Eliminar producto",
                             ),
                           ],
                         ),
@@ -159,9 +162,10 @@ class _PaginaProductosState extends State<PaginaProductos> {
         },
         child: Text(
           "+",
-          style: TextStyle(fontSize: 24),
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.purple[200],
+        tooltip: "Agregar Producto",
       ),
     );
   }

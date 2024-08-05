@@ -15,7 +15,7 @@ class _AgregarProductoState extends State<AgregarProducto> {
   final formKey = GlobalKey<FormState>();
   TextEditingController nombreProducto = TextEditingController();
   TextEditingController precioProducto = TextEditingController();
-  String baseUrlCreate = "http://localhost:8080/moviles/movil_pru/mysql/CRUD_06/create.php";
+  String baseUrlCreate = "http://localhost/CRUD_06/create.php";
 
   Future<bool> _guardar() async {
     if (!validarNombreProducto(nombreProducto.text)) {
@@ -31,7 +31,7 @@ class _AgregarProductoState extends State<AgregarProducto> {
         Uri.parse(baseUrlCreate),
         body: {
           'nombre_productos': nombreProducto.text,
-          'precio_producto': precioProducto.text,
+          'precio_productos': precioProducto.text,
         },
       );
 
@@ -70,6 +70,7 @@ class _AgregarProductoState extends State<AgregarProducto> {
             children: [
               TextFormField(
                 controller: nombreProducto,
+                key: Key('nombreProducto'),
                 decoration: InputDecoration(
                   hintText: "Nombre Producto",
                   enabledBorder: OutlineInputBorder(
@@ -96,6 +97,7 @@ class _AgregarProductoState extends State<AgregarProducto> {
               ),
               const SizedBox(height: 16),
               TextFormField(
+                key: Key('precioProducto'),
                 controller: precioProducto,
                 decoration: InputDecoration(
                   hintText: "Precio Producto",
@@ -123,6 +125,7 @@ class _AgregarProductoState extends State<AgregarProducto> {
               ),
               const SizedBox(height: 16),
               ElevatedButton(
+                key: Key('guardarButton'),
                 onPressed: () async {
                   if (formKey.currentState!.validate()) {
                     bool exito = await _guardar();
